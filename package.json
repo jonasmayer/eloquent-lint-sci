@@ -5,7 +5,6 @@
   "description": "Scientific plugin for eloquent lint",
   "main": "index.js",
   "scripts": {
-    "start": "babel-node index.js samples --source-maps --debug --presets es2015,stage-0 --require babel-polyfill",
     "test": "ava test",
     "lint": "eslint index.js lib test"
   },
