@@ -1,8 +1,7 @@
 import _ from "lodash";
 import lib from "./lib";
 
-export default function plugin (options) {
-    options = options || {};
+export default function plugin() {
     return function (files, eloquent, done) {
         _.forEach(files, (file, fileName) => {
             _.forEach(file.lines, (line, index) => {
@@ -12,4 +11,4 @@ export default function plugin (options) {
         });
         done();
     };
-};
+}
