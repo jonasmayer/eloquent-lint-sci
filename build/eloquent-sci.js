@@ -62,8 +62,17 @@ module.exports =
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var lib = function lib(line, printFunction) {
-	    (0, _annotations2.default)(line, printFunction);
+	var dictionaries = [_annotations2.default];
+
+	var sampleParser = function sampleParser(samples, line, printFunction) {
+	    _lodash2.default.forEach(samples, function (sample) {
+	        var patt = new RegExp(sample.regex, "g");
+	        var match = patt.exec(line);
+	        while (match != null) {
+	            printFunction(match.index + 1, line.substring(match.index - 10, match.index + 10), sample.message);
+	            match = patt.exec(line);
+	        }
+	    });
 	};
 
 	function plugin() {
@@ -71,7 +80,9 @@ module.exports =
 	        _lodash2.default.forEach(files, function (file, fileName) {
 	            _lodash2.default.forEach(file.lines, function (line, index) {
 	                var printFunction = _lodash2.default.bind(eloquent.printMessage, null, fileName, index + 1);
-	                lib(line, printFunction);
+	                _lodash2.default.forEach(dictionaries, function (dictionary) {
+	                    sampleParser(dictionary, line, printFunction);
+	                });
 	            });
 	        });
 	        done();
@@ -17187,32 +17198,14 @@ module.exports =
 
 /***/ },
 /* 3 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
 	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-
-	exports.default = function (line, printFunction) {
-	    _lodash2.default.forEach(samples, function (sample) {
-	        var patt = new RegExp(sample.regex, "g");
-	        var match = patt.exec(line);
-	        while (match != null) {
-	            printFunction(match.index + 1, line.substring(match.index - 10, match.index + 10), sample.message);
-	            match = patt.exec(line);
-	        }
-	    });
-	};
-
-	var _lodash = __webpack_require__(1);
-
-	var _lodash2 = _interopRequireDefault(_lodash);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var samples = [{
+	exports.default = [{
 	    message: "annotations left behind",
 	    regex: "FIXME"
 	}, {
